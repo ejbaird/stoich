@@ -21,7 +21,7 @@ def parse_input():
     return args
 
 class AminoAcid(object):
-
+    
     def __init__(self, letter, name, C, H, N, O, S=0):
         self.letter = letter
         self.name = name
@@ -30,6 +30,14 @@ class AminoAcid(object):
         self.N = N
         self.O = O
         self.S = S
+    
+    def __str__(self):
+        return '{} ({}): N={} H={} O={}'.format(self.letter, self.name, self.N, self.H, self.O)
+
+#c_counts = 0
+#for acid in protein_sequence:
+#    c_counts += aa[acid].C
+
 
 def getAminoAcids():
     aa = {}
@@ -83,7 +91,7 @@ def geneCN(sequence, AAdict):
     '''goal: take a single AA sequence and obtain from it #C, #N, and C:N'''
     pass
 
-def allgenesCN(genedict)
+def allgenesCN(genedict):
     CN_dict = {}
     for gene in genedict:
          try:
