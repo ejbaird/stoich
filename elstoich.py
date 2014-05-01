@@ -4,21 +4,20 @@
 
 import argparse
 import os 
-import sys#, getopt
-#import fileinput
+import sys
 
 from Bio import SeqIO
+from Bio import SeqFeature
 from Bio.Seq import Seq
 from Bio.SeqRecord import SeqRecord
 from Bio.Alphabet import IUPAC
 
 def parse_input():
     parser = argparse.ArgumentParser()
-    parser.add_argument('-r', dest='reference')
+    parser.add_argument('-g', dest='genref')
     parser.add_argument('-d', dest='diff_exp')
     # parse_args() is a function; needs parens
     args = parser.parse_args()
-    print args
     return args
 
 class AminoAcid(object):
@@ -56,8 +55,45 @@ def getAminoAcids():
     aa['V'] = AminoAcid('V', 'Val', 5, 11, 1, 2)
     return aa
 
+def make_record(genome):
+    it = SeqIO.parse(genome, "genbank")
+    record = it.next()
+    return record
+
+def get_geneAAs(record):
+    geneinfo = []
+    for i in record.features:
+        if i.type == 'CDS':
+            locus_tag = i.qualifiers['locus_tag'][0]
+            try:
+                gene_name = i.qualifiers['gene'][0]
+            except KeyError:
+                gene_name = 'none'
+            try:
+                translation = i.qualifiers['translation'][0] 
+            except KeyError:
+                translation = 'none'
+            mytuple = (gene_name, translation)
+            geneinfo.append(mytuple)
+    print '\n', "Genome gene list (1st 5): ", '\n', geneinfo[:5]
+    print len(geneinfo)
+    return geneinfo
+
+def geneCN(sequence, AAdict):
+    '''goal: take a single AA sequence and obtain from it #C, #N, and C:N'''
+    pass
+
+def allgenesCN(genedict)
+    CN_dict = {}
+    for gene in genedict:
+         try:
+            run geneCN for each genedict[ #references a dict of tuples
+
 def main():
     args = parse_input()
     AA = getAminoAcids() 
+    rec = make_record(args.genref)
+    geneAA = get_geneAAs(rec)
+    CNcounts = allgeneCN(geneAA, AA)
 
 main()
