@@ -16,10 +16,9 @@ def parse_input():
     parser = argparse.ArgumentParser()
     parser.add_argument('-r', dest='reference')
     parser.add_argument('-d', dest='diff_exp')
-    # parse_args() is a function; needs the parens
+    # parse_args() is a function; needs parens
     args = parser.parse_args()
     print args
-    print args.reference, args.diff_exp
     return args
 
 class AminoAcid(object):
@@ -35,29 +34,26 @@ class AminoAcid(object):
 
 def getAminoAcids():
     aa = {}
-    aa['A'] = AminoAcid('A', 'Arg', 6, 14, 4, 2)
-    aa[R] = {abbrev:'Arg', C:6, H:14, N:4, O:2}
-    aa[N] = {abbrev:'Asn', C:4, H:8, N:2, O:3}
-    aa[D] = {abbrev:'Asp', C:7, H:7, N:1, O:4}
-    aa[C] = {abbrev:'Cys', C:3, H:7, N:1, O:2, S:1}
-    aa[Q] = {abbrev:'Gln', C:5, H:10, N:2, O:3}
-    aa[E] = {abbrev:'Glu', C:5, H:9, N:1, O:4}
-    aa[G] = {abbrev:'Gly', C:2, H:5, N:1, O:2}
-    aa[H] = {abbrev:'His', C:6, H:9, N:3, O:2}
-    aa[I] = {abbrev:'Ile', C:6, H:13, N:1, O:2}
-    aa[L] = {abbrev:'Leu', C:6, H:13, N:1, O:2}
-    aa[K] = {abbrev:'Lys', C:6, H:14, N:2, O:2}
-    
+    aa['A'] = AminoAcid('A', 'Ala', 3, 7, 1, 2)
+    aa['R'] = AminoAcid('R', 'Arg', 6, 14, 4, 2)
+    aa['N'] = AminoAcid('N', 'Asn', 4, 8, 2, 3) 
+    aa['D'] = AminoAcid('D', 'Asp', 7, 7, 1, 4)
+    aa['C'] = AminoAcid('C', 'Cys', 3, 7, 1, 2, S=1)
+    aa['Q'] = AminoAcid('Q', 'Gln', 5, 10, 2, 3)
+    aa['E'] = AminoAcid('E', 'Glu', 4, 9, 1, 4)
+    aa['G'] = AminoAcid('G', 'Gly', 2, 5, 1, 2)
+    aa['H'] = AminoAcid('H', 'His', 6, 9, 3, 2)
+    aa['I'] = AminoAcid('I', 'Ile', 6, 13, 1, 2)
+    aa['L'] = AminoAcid('L', 'Leu', 6, 13, 1, 2)
+    aa['K'] = AminoAcid('K', 'Lys', 6, 14, 2, 2)
     aa['M'] = AminoAcid('M', 'Met', 5, 11, 1, 2, S=1)
-    aa[M] = {abbrev:'Met', C:5, H:11, N:1, O:2, S:1}
-
-    aa[F] = {abbrev:'Phe', C:9, H:11, N:1, O:2}
-    aa[P] = {abbrev:'Pro', C:5, H:9, N:1, O:2}
-    aa[S] = {abbrev:'Ser', C:3, H:7, N:1, O:3}
-    aa[T] = {abbrev:'Thr', C:4, H:9, N:1, O:3}
-    aa[W] = {abbrev:'Trp', C:11, H:12, N:2, O:2}
-    aa[Y] = {abbrev:'Tyr', C:9, H:11, N:1, O:3}
-    aa[V] = {abbrev:'Val', C:5, H:11, N:1, O:2}
+    aa['F'] = AminoAcid('F', 'Phe', 9, 11, 1, 2)
+    aa['P'] = AminoAcid('P', 'Pro', 5, 9, 1, 2)
+    aa['S'] = AminoAcid('S', 'Ser', 3, 7, 1, 3)
+    aa['T'] = AminoAcid('T', 'Thr', 4, 9, 1, 3)
+    aa['W'] = AminoAcid('W', 'Trp', 11, 12, 2, 2)
+    aa['Y'] = AminoAcid('Y', 'Tyr', 9, 11, 1, 3)
+    aa['V'] = AminoAcid('V', 'Val', 5, 11, 1, 2)
     return aa
 
 def main():
