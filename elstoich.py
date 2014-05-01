@@ -24,13 +24,14 @@ def parse_input():
 
 class AminoAcid(object):
 
-    def __init__(self, letter, name, C, H, N, O):
+    def __init__(self, letter, name, C, H, N, O, S=0):
         self.letter = letter
         self.name = name
         self.C = C
         self.H = H
         self.N = N
         self.O = O
+        self.S = S
 
 def getAminoAcids():
     aa = {}
@@ -46,7 +47,10 @@ def getAminoAcids():
     aa[I] = {abbrev:'Ile', C:6, H:13, N:1, O:2}
     aa[L] = {abbrev:'Leu', C:6, H:13, N:1, O:2}
     aa[K] = {abbrev:'Lys', C:6, H:14, N:2, O:2}
+    
+    aa['M'] = AminoAcid('M', 'Met', 5, 11, 1, 2, S=1)
     aa[M] = {abbrev:'Met', C:5, H:11, N:1, O:2, S:1}
+
     aa[F] = {abbrev:'Phe', C:9, H:11, N:1, O:2}
     aa[P] = {abbrev:'Pro', C:5, H:9, N:1, O:2}
     aa[S] = {abbrev:'Ser', C:3, H:7, N:1, O:3}
