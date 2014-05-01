@@ -16,14 +16,25 @@ def parse_input():
     parser = argparse.ArgumentParser()
     parser.add_argument('-r', dest='reference')
     parser.add_argument('-d', dest='diff_exp')
-    args = parser.parse_args
+    # parse_args() is a function; needs the parens
+    args = parser.parse_args()
     print args
     print args.reference, args.diff_exp
     return args
 
-def AAelements():
+class AminoAcid(object):
+
+    def __init__(self, letter, name, C, H, N, O):
+        self.letter = letter
+        self.name = name
+        self.C = C
+        self.H = H
+        self.N = N
+        self.O = O
+
+def getAminoAcids():
     aa = {}
-    aa[A] = {abbrev:'Ala', C:3, H:7, N:1, O:2}
+    aa['A'] = AminoAcid('A', 'Arg', 6, 14, 4, 2)
     aa[R] = {abbrev:'Arg', C:6, H:14, N:4, O:2}
     aa[N] = {abbrev:'Asn', C:4, H:8, N:2, O:3}
     aa[D] = {abbrev:'Asp', C:7, H:7, N:1, O:4}
@@ -47,6 +58,6 @@ def AAelements():
 
 def main():
     args = parse_input()
-    AA = AAelements() 
+    AA = getAminoAcids() 
 
 main()
