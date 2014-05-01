@@ -13,8 +13,8 @@ For example,
 
 ###Structure of program
 
-1. input differential expression array and reference (done)
-2. determine atom counts for each amino acid (done)
+1. [done] input differential expression array and reference
+2. [done] determine atom counts for each amino acid
 3. create Python-based genbank dictionary, esp. with gene name and translation
 4. create list of genes from diff_exp_array (important?)
 5. determine #C, #N, and C:N per gene for the genome
