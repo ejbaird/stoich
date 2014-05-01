@@ -9,7 +9,7 @@ Type the following into the command line:
 
 For example, 
 
-    python elstoich.py -r REL606.2.gbk -d arrays.txt
+    python elstoich.py -g REL606.2.gbk -d arrays.txt
 
 ###Structure of program
 
