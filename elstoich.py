@@ -56,6 +56,8 @@ def getAminoAcids():
     return aa
 
 def make_record(genome):
+    '''obtain BioPython object of the refseq'''
+
     it = SeqIO.parse(genome, "genbank")
     record = it.next()
     return record
@@ -73,21 +75,24 @@ def get_geneAAs(record):
                 translation = i.qualifiers['translation'][0] 
             except KeyError:
                 translation = 'none'
-            mytuple = (gene_name, translation)
+            mytuple = (gene_name, locus_tag, translation)
             geneinfo.append(mytuple)
     print '\n', "Genome gene list (1st 5): ", '\n', geneinfo[:5]
     print len(geneinfo)
     return geneinfo
 
 def geneCN(sequence, AAdict):
-    '''goal: take a single AA sequence and obtain from it #C, #N, and C:N'''
-    pass
+    '''goal: take a single gene's AA sequence and obtain from it #C, #N, and C:N'''
+    for AA in sequence:
+        cn_tuple = ('#C', '#N', 'C:N')
 
-def allgenesCN(genedict)
+def allgenesCN(genedict):
     CN_dict = {}
     for gene in genedict:
-         try:
+        try:
             run geneCN for each genedict[ #references a dict of tuples
+        except KeyError:
+            pass #?
 
 def main():
     args = parse_input()
