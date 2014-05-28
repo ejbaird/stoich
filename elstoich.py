@@ -92,6 +92,8 @@ def get_geneAAs(record):
 def geneCN(sequence, AAdict):
     '''goal: take a single gene's AA sequence and obtain from it #C, #N, and C:N'''
     for AA in sequence:
+        #snpmatrix[oldbas][newbase] = snpmatrix[oldbase].get(new_base,0) +1
+        #matrixdict[diffname] = snpmatrix, line 271
         cn_tuple = ('#C', '#N', 'C:N')
 
 def allgenesCN(genedict):
