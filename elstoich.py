@@ -20,6 +20,14 @@ def parse_input():
     args = parser.parse_args()
     return args
 
+class Gene(object):  '''creating new data structure. a class describes a way of storing data and methods and memory (how to store in memory) that are accessible from same entry point (i.e., Gene). class describes how to store data. when you instantiate an instance (i.e., create an object), that's one output of that class (class is blueprint, object is what it makes). Gene, here, inherits from object. everything is of type object (most basic type of object). self is the instancw that the method is called on'''
+    def __init__(self, gene_name, locus_tag, sequence):
+        self.gene_name = gene_name
+        self.locus_tag = locus_tag
+        self.sequence = sequence
+        self.N = 0
+        self.C = 0
+
 class AminoAcid(object):
     
     def __init__(self, letter, name, C, H, N, O, S=0):
@@ -32,12 +40,7 @@ class AminoAcid(object):
         self.S = S
     
     def __str__(self):
-        return '{} ({}): N={} H={} O={}'.format(self.letter, self.name, self.N, self.H, self.O)
-
-#c_counts = 0
-#for acid in protein_sequence:
-#    c_counts += aa[acid].C
-
+        return '{} ({}): C={} N={} H={} O={}'.format(self.letter, self.name, self.C, self.N, self.H, self.O)
 
 def getAminoAcids():
     aa = {}
@@ -70,7 +73,7 @@ def make_record(genome):
     record = it.next()
     return record
 
-def get_geneAAs(record):
+def get_geneAAs(record): 
     geneinfo = []
     for i in record.features:
         if i.type == 'CDS':
@@ -83,29 +86,30 @@ def get_geneAAs(record):
                 translation = i.qualifiers['translation'][0] 
             except KeyError:
                 translation = 'none'
-            mytuple = (gene_name, locus_tag, translation)
-            geneinfo.append(mytuple)
+            geneinfo.append(Gene(gene_name, locus_tag, translation))
     print '\n', "Genome gene list (1st 5): ", '\n', geneinfo[:5]
     print len(geneinfo)
     return geneinfo
 
 def geneCN(sequence, AAdict):
     '''goal: take a single gene's AA sequence and obtain from it #C, #N, and C:N'''
+    numC = 0
+    numN = 0
     for AA in sequence:
-        #snpmatrix[oldbase][newbase] = snpmatrix[oldbase].get(newbase,0) +1
-        #matrixdict[diffname] = snpmatrix, line 271
-        # [  AADict[AA] for AA in sequence   ]
-        
-        cn_tuple = ('#C', '#N', 'C:N')
-        
+        numC += AAdict[AA].C
+        numN += AAdict[AA].N
+    return numC, numN
 
-def allgenesCN(genedict):
-    CN_dict = {}
-    for gene in genedict:
-        try:
-            run geneCN for each genedict[ #references a dict of tuples
-        except KeyError:
-            pass #?
+def allgenesCN(genelist, AAdict):
+ #       try:
+ #           run geneCN for each genelist[ #references a dict of tuples
+ #       except KeyError:
+ #           pass #?
+
+    for gene in genelist:
+        numC, numN = geneCN(gene.sequence, AAdict)
+        gene.C = numC
+        gene.N = numN
 
 def main():
     args = parse_input()
