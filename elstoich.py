@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 #input: annotated reference genome and array.txt (tsv) of genes and differential expression between lines/ages
+#python elstoich.py -g REL606.2.gbk -d array.txt
 #output: chart of gene name, #C atoms, #N atoms, C/N ratio in both ancestor and evolved 
 
 import argparse
@@ -16,17 +17,17 @@ def parse_input():
     parser = argparse.ArgumentParser()
     parser.add_argument('-g', dest='genref')
     parser.add_argument('-d', dest='diff_exp')
-    # parse_args() is a function; needs parens
     args = parser.parse_args()
     return args
 
-class Gene(object):  '''creating new data structure. a class describes a way of storing data and methods and memory (how to store in memory) that are accessible from same entry point (i.e., Gene). class describes how to store data. when you instantiate an instance (i.e., create an object), that's one output of that class (class is blueprint, object is what it makes). Gene, here, inherits from object. everything is of type object (most basic type of object). self is the instancw that the method is called on'''
+class Gene(object):
+
     def __init__(self, gene_name, locus_tag, sequence):
         self.gene_name = gene_name
         self.locus_tag = locus_tag
         self.sequence = sequence
-        self.N = 0
         self.C = 0
+        self.N = 0
 
 class AminoAcid(object):
     
@@ -40,7 +41,7 @@ class AminoAcid(object):
         self.S = S
     
     def __str__(self):
-        return '{} ({}): C={} N={} H={} O={}'.format(self.letter, self.name, self.C, self.N, self.H, self.O)
+        return '{} ({}): C={} N={} H={} O={} S={}'.format(self.letter, self.name, self.C, self.N, self.H, self.O, self.S)
 
 def getAminoAcids():
     aa = {}
@@ -64,6 +65,10 @@ def getAminoAcids():
     aa['W'] = AminoAcid('W', 'Trp', 11, 12, 2, 2)
     aa['Y'] = AminoAcid('Y', 'Tyr', 9, 11, 1, 3)
     aa['V'] = AminoAcid('V', 'Val', 5, 11, 1, 2)
+    aa['n'] = AminoAcid('n', 'none', 0, 0, 0, 0) #'none' somewhere? don't
+    aa['o'] = AminoAcid('o', 'none', 0, 0, 0, 0) #need these. KeyError in
+    aa['e'] = AminoAcid('e', 'none', 0, 0, 0, 0) #numC += AAdict[AA].C
+    aa['U'] = AminoAcid('U', 'none', 0, 0, 0, 0)
     return aa
 
 def make_record(genome):
@@ -73,7 +78,9 @@ def make_record(genome):
     record = it.next()
     return record
 
-def get_geneAAs(record): 
+def get_geneAAs(record):
+    '''create list of all genes, their locus tag, and their translation'''
+ 
     geneinfo = []
     for i in record.features:
         if i.type == 'CDS':
@@ -81,13 +88,13 @@ def get_geneAAs(record):
             try:
                 gene_name = i.qualifiers['gene'][0]
             except KeyError:
-                gene_name = 'none'
+                gene_name = 'none' #will this make items in list with same key? is that okay? or should I 'pass' ?
             try:
                 translation = i.qualifiers['translation'][0] 
             except KeyError:
-                translation = 'none'
+                translation = 'none' #okay? or should I 'pass'?
             geneinfo.append(Gene(gene_name, locus_tag, translation))
-    print '\n', "Genome gene list (1st 5): ", '\n', geneinfo[:5]
+    print '\n', "Genome gene list (1st 10): ", '\n', geneinfo[:10]
     print len(geneinfo)
     return geneinfo
 
@@ -102,7 +109,7 @@ def geneCN(sequence, AAdict):
 
 def allgenesCN(genelist, AAdict):
  #       try:
- #           run geneCN for each genelist[ #references a dict of tuples
+ #           run geneCN for each genelist
  #       except KeyError:
  #           pass #?
 
@@ -110,12 +117,24 @@ def allgenesCN(genelist, AAdict):
         numC, numN = geneCN(gene.sequence, AAdict)
         gene.C = numC
         gene.N = numN
+        print gene.gene_name, gene.locus_tag, gene.C, gene.N
+    return genelist
+
+def write_genesCN(genelist): #parallyze line 365, 378
+    header = 'gene, locus_tag, C, N'
+    with open('geneCNcounts.csv', 'wb') as outfp: #title + time/date?
+        outfp.write(header + '\n')
+        for name, locus_tag, AAseq, C, N in genelist:
+            row = [locus_tag]
+            outfp.write(', '.join([str(c) for c in row]) + '\n'
 
 def main():
     args = parse_input()
     AA = getAminoAcids() 
     rec = make_record(args.genref)
     geneAA = get_geneAAs(rec)
-    CNcounts = allgeneCN(geneAA, AA)
+    CNcounts = allgenesCN(geneAA, AA)
+    #print CNcounts - this just lists all gene object locations
+    '''output into csv. remove 'loci with 0 C or N (ie no translation)'''
 
 main()
