@@ -6,6 +6,7 @@
 import argparse
 import os 
 import sys
+import datetime
 
 from Bio import SeqIO
 from Bio import SeqFeature
@@ -16,7 +17,7 @@ from Bio.Alphabet import IUPAC
 def parse_input():
     parser = argparse.ArgumentParser()
     parser.add_argument('-g', dest='genref')
-    parser.add_argument('-d', dest='diff_exp')
+    parser.add_argument('-d', dest='diff_exp') #make optional
     args = parser.parse_args()
     return args
 
@@ -28,6 +29,9 @@ class Gene(object):
         self.sequence = sequence
         self.C = 0
         self.N = 0
+
+    def to_csv(self):
+        return '{}, {}, {}, {}\n'.format(self.locus_tag, self.gene_name, self.C, self.N)
 
 class AminoAcid(object):
     
@@ -121,12 +125,12 @@ def allgenesCN(genelist, AAdict):
     return genelist
 
 def write_genesCN(genelist): #parallyze line 365, 378
-    header = 'gene, locus_tag, C, N'
-    with open('geneCNcounts.csv', 'wb') as outfp: #title + time/date?
+    header = 'locus_tag, gene, C, N'
+    with open('geneCNcounts_'+ datetime.datetime.now().strftime('%B_%d_%Y_%I-%M-%S%p') + '.csv', 'wb') as outfp: #write binary (write permissions, raw binary (helps with compatibility))
         outfp.write(header + '\n')
-        for name, locus_tag, AAseq, C, N in genelist:
-            row = [locus_tag]
-            outfp.write(', '.join([str(c) for c in row]) + '\n'
+        for gene in genelist:
+            #row = [locus_tag]
+            outfp.write(gene.to_csv())
 
 def main():
     args = parse_input()
@@ -134,6 +138,7 @@ def main():
     rec = make_record(args.genref)
     geneAA = get_geneAAs(rec)
     CNcounts = allgenesCN(geneAA, AA)
+    write_genesCN(CNcounts)
     #print CNcounts - this just lists all gene object locations
     '''output into csv. remove 'loci with 0 C or N (ie no translation)'''
 
