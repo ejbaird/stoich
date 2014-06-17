@@ -5,15 +5,15 @@ CTurner's project for determining counts and ratios of elements in amino acids i
 
 Type the following into the command line:
 
-    python elstoich.py -g <name of genome reference file> -d <name of differential expression file>
+    python elstoich.py -g <name of genome reference file> (-d <name of differential expression file>)
 
 For example, 
 
-    python elstoich.py -g REL606.2.gbk -d arrays.txt
+    python elstoich.py -g REL606.2.gbk (-d arrays.txt)
 
 ###Output of program
 
-gene name | #C atoms | #N atoms | C:N ratio   
+gene name | #C atoms | #N atoms
 (for all genes in the given file)
 
 ###Structure of program
@@ -21,8 +21,8 @@ gene name | #C atoms | #N atoms | C:N ratio
 1. [done] input differential expression array and reference
 2. [done] determine atom counts for each amino acid
 3. [done] create Python-based genbank dictionary (genename, locustag, translation)
-4. create list of genes from diff-exp-array (important to do?)
-5. determine #C, #N, and C:N per gene for the genome
+(4. create list of genes from diff-exp-array (important to do?))
+5. [done] determine #C, #N, and C:N per gene for the genome
 
 ###Reference paper
 

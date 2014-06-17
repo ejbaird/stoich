@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 #input: annotated reference genome and array.txt (tsv) of genes and differential expression between lines/ages
-#python elstoich.py -g REL606.2.gbk -d array.txt
+#python elstoich.py -g REL606.2.gbk   (-d array.txt)
 #output: chart of gene name, #C atoms, #N atoms, C/N ratio in both ancestor and evolved 
 
 import argparse
@@ -17,7 +17,7 @@ from Bio.Alphabet import IUPAC
 def parse_input():
     parser = argparse.ArgumentParser()
     parser.add_argument('-g', dest='genref')
-    parser.add_argument('-d', dest='diff_exp') #make optional
+    #parser.add_argument('-d', dest='diff_exp') #make optional
     args = parser.parse_args()
     return args
 
